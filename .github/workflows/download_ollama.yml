@@ -73,33 +73,18 @@ jobs:
           }
 
       - name: Prepare Redist and Zips
-        if: env.NEEDS_UPDATE == 'true'
+        if: ${{ env.NEEDS_UPDATE == 'true' }}
         run: |
           # Copy portable script
           Copy-Item -Path "ollama_portable.bat" -Destination "ollama\ollama_portable.bat"
-          
-          # Create redist structure
-         # New-Item -ItemType Directory -Force -Path "redist"
-          
-          # Move lib
-          #if (Test-Path "ollama\lib") {
-          #  Move-Item -Path "ollama\lib" -Destination "redist\lib"
-          #}
-          
-          # Compress using 7z to handle large files (splitting if needed, but here we just use max compression)
-          # GitHub release asset limit is 2GB. If it exceeds, we need to split.
-          # For now, let's try 7z with best compression to see if it fits, otherwise we split.
-          
           # Compress ollama main folder
           7z a -tzip -mx9 "ollama-$env:VERSION.zip" "ollama\*"
-          
-          # Compress redist folder - using 7z format might be better but let's stick to zip for compatibility unless size is issue
-          # The error says size > 2GB. 
-          # Let's use 7z to create a multi-part archive if it's too big, OR just use 7z format which has better compression.
-          # BUT standard windows zip doesn't support multi-part well.
-          # Let's split into 1GB chunks.
-          
-          #7z a -tzip -mx9 -v1000m "redist.zip" "redist\*"
+          # (其他命令可按需取消注释)
+          # New-Item -ItemType Directory -Force -Path "redist"
+          # if (Test-Path "ollama\lib") {
+          #   Move-Item -Path "ollama\lib" -Destination "redist\lib"
+          # }
+          # 7z a -tzip -mx9 -v1000m "redist.zip" "redist\*"
 
       - name: Create Release
         if: env.NEEDS_UPDATE == 'true'
