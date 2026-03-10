@@ -79,7 +79,7 @@ jobs:
           Copy-Item -Path "ollama_portable.bat" -Destination "ollama\ollama_portable.bat"
           
           # Create redist structure
-          New-Item -ItemType Directory -Force -Path "redist"
+         # New-Item -ItemType Directory -Force -Path "redist"
           
           # Move lib
           #if (Test-Path "ollama\lib") {
@@ -99,7 +99,7 @@ jobs:
           # BUT standard windows zip doesn't support multi-part well.
           # Let's split into 1GB chunks.
           
-          7z a -tzip -mx9 -v1000m "redist.zip" "redist\*"
+          #7z a -tzip -mx9 -v1000m "redist.zip" "redist\*"
 
       - name: Create Release
         if: env.NEEDS_UPDATE == 'true'
